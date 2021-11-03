@@ -6,12 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "tb_postagem")
@@ -24,7 +27,7 @@ public class Postagem {
 	@NotNull(message = "O atributo título é obrigatório")
 	@Size(min = 5, max = 100, message = "O atributo texto "
 			+ "deve conter no mínimo 5 caracteres e máximo 100")
-	private String titulos;
+	private String titulo;
 	
 	/**
 	 * A annotation @NotBlank indica que um atributo não pode ser nulo E insercao de espaços em branco
@@ -38,6 +41,11 @@ public class Postagem {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data = new java.sql.Date(System.currentTimeMillis());
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Tema tema;
+
 
 	public long getId() {
 		return id;
@@ -47,12 +55,12 @@ public class Postagem {
 		this.id = id;
 	}
 
-	public String getTitulos() {
-		return titulos;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setTitulos(String titulos) {
-		this.titulos = titulos;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public String getTexto() {
@@ -71,5 +79,12 @@ public class Postagem {
 		this.data = data;
 	}
 	
+	public Tema getTema() {
+		return tema;
+	}
+	
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
 	
 }
