@@ -38,14 +38,16 @@ public class UsuarioService {
 		return Optional.of(usuarioRepository.save(usuario));
 	}
 	
+	private String criptografarSenha(String senha) {
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		return encoder.encode(senha);
+		
+	}
+	
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
-		/**
-		 * Verifica através no metodo findById se o id para atualização existe no banco
-		 * Se o usuario isPresent vamos verificar se o ID enviado é diferente 
-		 * do usuario informado, se for retorna vazio
-		 * Se não criptografa a senha e salva os dados 
-		 * Se o id não estver presente ele retorna vazio
-		 */
+
 		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
 
 			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
@@ -63,16 +65,6 @@ public class UsuarioService {
 		return Optional.empty();
 	}
 	
-	private String criptografarSenha(String senha) {
-		/**
-		 *  Instancia um objeto da Classe BCryptPasswordEncoder para criptografar
-		 *  a senha
-		 */
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-		return encoder.encode(senha);
-
-	}
 	
 	private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
 
@@ -98,12 +90,13 @@ public class UsuarioService {
 		if (usuario.isPresent()) {
 		
 			if (compararSenhas(usuarioLogin.get().getSenha(), usuario.get().getSenha())) {
+				
+				String token = gerarBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha());
 
 				usuarioLogin.get().setId(usuario.get().getId());
 				usuarioLogin.get().setNome(usuario.get().getNome());
 				usuarioLogin.get().setSenha(usuario.get().getSenha());
-				usuarioLogin.get()
-						.setToken(gerarBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha()));
+				usuarioLogin.get().setToken(token);
 
 				return usuarioLogin;
 
