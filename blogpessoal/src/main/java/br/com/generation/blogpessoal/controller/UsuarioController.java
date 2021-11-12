@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.generation.blogpessoal.model.UserLogin;
+import br.com.generation.blogpessoal.model.UsuarioLogin;
 import br.com.generation.blogpessoal.model.Usuario;
 import br.com.generation.blogpessoal.service.UsuarioService;
 
@@ -37,8 +37,8 @@ public class UsuarioController {
 	
 	
 	@PostMapping("/logar")
-	public ResponseEntity<UserLogin> login(@RequestBody Optional<UserLogin> user){
-		return usuarioService.logar(user)
+	public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> usuarioLogin){
+		return usuarioService.logar(usuarioLogin)
 				.map(resp -> ResponseEntity.ok(resp))
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}

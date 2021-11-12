@@ -1,6 +1,6 @@
 package br.com.generation.blogpessoal.model;
 
-public class UserLogin {
+public class UsuarioLogin {
 
 	private long id;
 	

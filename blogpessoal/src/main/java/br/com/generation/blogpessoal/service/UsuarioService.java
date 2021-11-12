@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.generation.blogpessoal.model.UserLogin;
+import br.com.generation.blogpessoal.model.UsuarioLogin;
 import br.com.generation.blogpessoal.model.Usuario;
 import br.com.generation.blogpessoal.repository.UsuarioRepository;
 
@@ -91,7 +91,7 @@ public class UsuarioService {
 
 	}
 	
-	public Optional<UserLogin> logar(Optional<UserLogin> usuarioLogin) {
+	public Optional<UsuarioLogin> logar(Optional<UsuarioLogin> usuarioLogin) {
 
 		Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
 
