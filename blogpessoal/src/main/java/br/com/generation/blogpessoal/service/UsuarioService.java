@@ -30,10 +30,7 @@ public class UsuarioService {
 		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			return Optional.empty();	
 		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		
-		String senhaEncoder = encoder.encode(usuario.getSenha());
-		usuario.setSenha(senhaEncoder);
+		usuario.setSenha(criptografarSenha(usuario.getSenha()));
 		
 		return Optional.of(usuarioRepository.save(usuario));
 	}

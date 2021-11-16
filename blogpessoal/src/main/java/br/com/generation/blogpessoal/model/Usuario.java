@@ -32,7 +32,7 @@ public class Usuario {
 	private String usuario;
 	
 	@NotBlank(message = "A senha do usuário é obrigatória")
-	@Size(min = 5, max = 100, message = "A senha do usuário deve estar entre 5 e 100 caracteres")
+	@Size(min = 5, message = "A senha do usuário deve ter no minimo 5 caracteres")
 	private String senha;
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
