@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -31,7 +32,7 @@ public class Usuario {
 	
 	@NotBlank(message = "O usuário é obrigatório")
 	@ApiModelProperty(example = "email@email.com.br")
-	@Size(min = 5, max = 100, message = "O user deve estar entre 5 e 100 caracteres")
+	@Email(message = "O e-mail deve ser válido")
 	private String usuario;
 	
 	@NotBlank(message = "A senha do usuário é obrigatória")
