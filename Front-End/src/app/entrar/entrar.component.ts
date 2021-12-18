@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
 import { UsuarioLogin } from '../model/UsuarioLogin';
+import { AlertasService } from '../service/alertas.service';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class EntrarComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private alertas: AlertasService
   ) { }
 
   ngOnInit(){
@@ -30,6 +32,7 @@ export class EntrarComponent implements OnInit {
       environment.nome = this.usuarioLogin.nome
       environment.foto = this.usuarioLogin.foto
       environment.id = this.usuarioLogin.id
+      environment.tipo = this.usuarioLogin.tipo
 
       //Ver se as variaveis estao carregando as informações pelo console
       // console.log(environment.token)
@@ -41,10 +44,10 @@ export class EntrarComponent implements OnInit {
 
     }, erro => {
       if(erro.status == 500){
-        alert('Usuário ou senha está incorreto!')
+        this.alertas.showAlertDanger('Usuário ou senha está incorreto!')
       }
       if(erro.status == 401){
-        alert('Usuário não cadastrado')
+        this.alertas.showAlertDanger('Usuário não cadastrado')
       }
     })
   }

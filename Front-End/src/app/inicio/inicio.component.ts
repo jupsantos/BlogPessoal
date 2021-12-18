@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment.prod';
 import { Postagem } from '../model/Postagem';
 import { Tema } from '../model/Tema';
 import { Usuario } from '../model/Usuario';
+import { AlertasService } from '../service/alertas.service';
 import { AuthService } from '../service/auth.service';
 import { PostagemService } from '../service/postagem.service';
 import { TemaService } from '../service/tema.service';
@@ -21,20 +22,26 @@ export class InicioComponent implements OnInit {
   idUsuario = environment.id
   listaPostagens: Postagem[]
   listaTemas: Tema[]
+  tituloPost: string
+  descricaoTema: string
   idTema: number
+
+  key = 'data'
+  reverse = true
 
   constructor(
     private router: Router,
     private servicePostagem: PostagemService,
     private temaService: TemaService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertas: AlertasService
   ) { }
 
   ngOnInit() {
     window.scroll(0,0)
 
     if(environment.token == ''){
-      alert('Sua sessão expirou, faça login novamente.')
+      this.alertas.showAlertInfo('Sua sessão expirou, faça login novamente.')
       this.router.navigate(['/login'])
     }
 
@@ -75,11 +82,33 @@ export class InicioComponent implements OnInit {
 
     this.servicePostagem.postPostagem(this.postagem).subscribe((resp: Postagem) => {
       this.postagem = resp
-      alert('Publicação realizada com sucesso!')
+      this.alertas.showAlertSuccess('Publicação realizada com sucesso!')
       this.postagem = new Postagem()
       this.getAllPostagens()
     })
   }
 
 
+  findByTituloPostagem(){
+    if(this.tituloPost == ''){
+      this.getAllPostagens()
+    }
+    else{
+      this.servicePostagem.getByTituloPostagem(this.tituloPost).subscribe((resp: Postagem[]) => {
+        this.listaPostagens = resp
+      })
+    }
+  }
+
+  findByDescricaoTema(){
+    if(this.descricaoTema == ''){
+      this.getAllTemas
+    }
+    else{
+      this.temaService.getByDescricaoTema(this.descricaoTema).subscribe((resp: Tema[]) => {
+        this.listaTemas = resp
+      })
+    }
+
+  }
 }
